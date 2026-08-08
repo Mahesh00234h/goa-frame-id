@@ -69,18 +69,19 @@ function textArc(
   cx: number,
   cy: number,
   radius: number,
-  startAngle: number,
   spacing: number,
-  flip = false,
+  bottom = false,
 ) {
+  const chars = [...text];
   ctx.save();
   ctx.translate(cx, cy);
-  ctx.rotate(startAngle);
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  for (const ch of text) {
+  chars.forEach((ch, i) => {
+    const offset = (i - (chars.length - 1) / 2) * spacing;
     ctx.save();
-    if (flip) {
+    ctx.rotate(bottom ? -offset : offset);
+    if (bottom) {
       ctx.translate(0, radius);
       ctx.rotate(Math.PI);
     } else {
@@ -88,8 +89,7 @@ function textArc(
     }
     ctx.fillText(ch, 0, 0);
     ctx.restore();
-    ctx.rotate(spacing * (flip ? -1 : 1));
-  }
+  });
   ctx.restore();
 }
 
@@ -176,13 +176,13 @@ export function renderPfp(img: HTMLImageElement, size = 1024): HTMLCanvasElement
   // curved wordmark top + bottom
   ctx.fillStyle = BRAND.cream;
   ctx.font = `700 ${44 * S}px "Victor Mono", monospace`;
-  textArc(ctx, "HACKER HOUSE GOA", cx, cx, r + 100 * S, -0.62, 0.079);
+  textArc(ctx, "HACKER HOUSE GOA · 2026", cx, cx, r + 100 * S, 0.076);
   ctx.fillStyle = BRAND.gold;
   ctx.font = `700 ${40 * S}px "Victor Mono", monospace`;
-  textArc(ctx, "· 2026 · #FRAMEINGOA ·", cx, cx, r + 96 * S, 0.72, 0.076, true);
+  textArc(ctx, "· #FRAMEINGOA ·", cx, cx, r + 96 * S, 0.076, true);
 
-  palm(ctx, 92 * S, 940 * S, 1.5 * S, "rgba(245,233,200,0.75)");
-  palm(ctx, 932 * S, 940 * S, -1.5 * S, "rgba(245,233,200,0.75)");
+  palm(ctx, 120 * S, 960 * S, 1.25 * S, "rgba(245,233,200,0.7)");
+  palm(ctx, 904 * S, 960 * S, -1.25 * S, "rgba(245,233,200,0.7)");
   return c;
 }
 
