@@ -80,7 +80,7 @@ function textArc(
   chars.forEach((ch, i) => {
     const offset = (i - (chars.length - 1) / 2) * spacing;
     ctx.save();
-    ctx.rotate(bottom ? -offset : offset);
+    ctx.rotate(bottom ? offset : offset);
     if (bottom) {
       ctx.translate(0, radius);
       ctx.rotate(Math.PI);
@@ -146,7 +146,7 @@ export function renderPfp(img: HTMLImageElement, size = 1024): HTMLCanvasElement
   sunRays(ctx, cx, cx, 470 * S, "rgba(245,233,200,0.16)");
 
   // photo in a circle
-  const r = 380 * S;
+  const r = 350 * S;
   ctx.save();
   ctx.beginPath();
   ctx.arc(cx, cx, r, 0, Math.PI * 2);
@@ -176,13 +176,13 @@ export function renderPfp(img: HTMLImageElement, size = 1024): HTMLCanvasElement
   // curved wordmark top + bottom
   ctx.fillStyle = BRAND.cream;
   ctx.font = `700 ${44 * S}px "Victor Mono", monospace`;
-  textArc(ctx, "HACKER HOUSE GOA · 2026", cx, cx, r + 100 * S, 0.076);
+  textArc(ctx, "HACKER HOUSE GOA · 2026", cx, cx, r + 104 * S, 0.076);
   ctx.fillStyle = BRAND.gold;
   ctx.font = `700 ${40 * S}px "Victor Mono", monospace`;
-  textArc(ctx, "· #FRAMEINGOA ·", cx, cx, r + 96 * S, 0.076, true);
+  textArc(ctx, "· #FRAMEINGOA ·", cx, cx, r + 100 * S, 0.082, true);
 
-  palm(ctx, 120 * S, 960 * S, 1.25 * S, "rgba(245,233,200,0.7)");
-  palm(ctx, 904 * S, 960 * S, -1.25 * S, "rgba(245,233,200,0.7)");
+  palm(ctx, 108 * S, 934 * S, 1.25 * S, "rgba(245,233,200,0.7)");
+  palm(ctx, 916 * S, 934 * S, -1.25 * S, "rgba(245,233,200,0.7)");
   return c;
 }
 
