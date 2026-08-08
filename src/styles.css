@@ -143,5 +143,27 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-mono-brand);
   }
+
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+}
+
+@theme inline {
+  --font-display: var(--font-display);
+  --font-brand: var(--font-mono-brand);
+}
+
+@utility bg-jungle {
+  background-image:
+    radial-gradient(
+      110% 70% at 50% 0%,
+      color-mix(in oklab, var(--primary) 35%, transparent) 0%,
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--background), color-mix(in oklab, var(--background) 80%, black));
 }
