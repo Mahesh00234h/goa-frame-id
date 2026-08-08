@@ -78,14 +78,14 @@ function textArc(
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   chars.forEach((ch, i) => {
-    const offset = (i - (chars.length - 1) / 2) * spacing;
+    const a = (i - (chars.length - 1) / 2) * spacing;
     ctx.save();
-    ctx.rotate(bottom ? -offset : offset);
     if (bottom) {
-      ctx.translate(0, radius);
-      ctx.rotate(Math.PI);
+      ctx.translate(radius * Math.sin(a), radius * Math.cos(a));
+      ctx.rotate(-a);
     } else {
-      ctx.translate(0, -radius);
+      ctx.translate(radius * Math.sin(a), -radius * Math.cos(a));
+      ctx.rotate(a);
     }
     ctx.fillText(ch, 0, 0);
     ctx.restore();
