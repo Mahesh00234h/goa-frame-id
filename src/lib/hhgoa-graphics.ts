@@ -80,7 +80,7 @@ function textArc(
   chars.forEach((ch, i) => {
     const offset = (i - (chars.length - 1) / 2) * spacing;
     ctx.save();
-    ctx.rotate(bottom ? offset : offset);
+    ctx.rotate(bottom ? -offset : offset);
     if (bottom) {
       ctx.translate(0, radius);
       ctx.rotate(Math.PI);
