@@ -313,7 +313,7 @@ export async function loadPhoto(file: File): Promise<HTMLImageElement> {
       quality?: number;
     }) => Promise<Blob | Blob[]>;
     const out = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.92 });
-    blob = Array.isArray(out) ? out[0] : out;
+    blob = (Array.isArray(out) ? out[0] : out) as Blob;
   }
   const url = URL.createObjectURL(blob);
   try {
