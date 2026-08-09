@@ -7,6 +7,7 @@ import {
   renderBadge,
   renderPfp,
 } from "@/lib/hhgoa-graphics";
+import { countCreated, countVisit, readStats, type LocalStats } from "@/lib/local-stats";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,12 +48,17 @@ function Index() {
   const [title, setTitle] = useState("");
   const blobRef = useRef<Blob | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const [stats, setStats] = useState<LocalStats>({ visits: 0, created: 0 });
+
+  useEffect(() => {
+    setStats(countVisit());
+  }, []);
 
   const seed = (name + role).trim();
   useEffect(() => {
     setTitle((t) => (t ? t : ""));
   }, []);
-  const activeTitle = title || builderTitle(seed || "goa");
+  const activeTitle = title || builderTitle(seed || "goa") || "Builder";
 
   const render = useCallback(async () => {
     if (!img) return;
@@ -101,6 +107,7 @@ function Index() {
     a.href = preview;
     a.download = filename;
     a.click();
+    setStats(countCreated());
   }
 
   async function shareToX() {
@@ -204,7 +211,7 @@ function Index() {
                     </span>
                     <button
                       onClick={() =>
-                        setTitle(builderTitle(seed + Math.random().toString(36).slice(2)))
+                        setTitle(builderTitle(seed + Math.random().toString(36).slice(2)) ?? "Builder")
                       }
                       className="font-brand rounded-xl border border-primary px-3 py-2 text-xs tracking-widest text-primary uppercase hover:bg-primary hover:text-primary-foreground"
                     >
