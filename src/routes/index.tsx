@@ -7,6 +7,7 @@ import {
   renderBadge,
   renderPfp,
 } from "@/lib/hhgoa-graphics";
+import { countCreated, countVisit, type LocalStats } from "@/lib/local-stats";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,12 +48,17 @@ function Index() {
   const [title, setTitle] = useState("");
   const blobRef = useRef<Blob | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const [stats, setStats] = useState<LocalStats>({ visits: 0, created: 0 });
+
+  useEffect(() => {
+    setStats(countVisit());
+  }, []);
 
   const seed = (name + role).trim();
   useEffect(() => {
     setTitle((t) => (t ? t : ""));
   }, []);
-  const activeTitle = title || builderTitle(seed || "goa");
+  const activeTitle = title || builderTitle(seed || "goa") || "Builder";
 
   const render = useCallback(async () => {
     if (!img) return;
@@ -101,6 +107,7 @@ function Index() {
     a.href = preview;
     a.download = filename;
     a.click();
+    setStats(countCreated());
   }
 
   async function shareToX() {
@@ -111,6 +118,7 @@ function Index() {
       if (navigator.canShare?.({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: CAPTION });
+          setStats(countCreated());
           return;
         } catch {
           /* user cancelled — fall through */
@@ -132,6 +140,10 @@ function Index() {
           <p className="font-brand mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
             Upload a photo, get an on-brand HH Goa graphic in seconds. No login. No gate.
           </p>
+          <div className="font-brand mt-6 flex justify-center gap-3">
+            <Stat label="Visits" value={stats.visits} />
+            <Stat label="Graphics created" value={stats.created} />
+          </div>
         </header>
 
         <div className="mt-8 flex justify-center gap-2">
@@ -204,7 +216,7 @@ function Index() {
                     </span>
                     <button
                       onClick={() =>
-                        setTitle(builderTitle(seed + Math.random().toString(36).slice(2)))
+                        setTitle(builderTitle(seed + Math.random().toString(36).slice(2)) ?? "Builder")
                       }
                       className="font-brand rounded-xl border border-primary px-3 py-2 text-xs tracking-widest text-primary uppercase hover:bg-primary hover:text-primary-foreground"
                     >
@@ -259,6 +271,15 @@ function Index() {
         </div>
       </div>
     </main>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-full border border-border bg-card px-4 py-1.5 text-xs">
+      <span className="text-accent">{value.toLocaleString()}</span>{" "}
+      <span className="tracking-widest text-muted-foreground uppercase">{label}</span>
+    </div>
   );
 }
 
