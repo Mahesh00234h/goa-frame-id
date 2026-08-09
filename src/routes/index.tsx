@@ -274,9 +274,16 @@ function Index() {
   );
 }
 
-function Field({
-  ...({} as never);
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-full border border-border bg-card px-4 py-1.5 text-xs">
+      <span className="text-accent">{value.toLocaleString()}</span>{" "}
+      <span className="tracking-widest text-muted-foreground uppercase">{label}</span>
+    </div>
+  );
+}
 
+function Field({
   label,
   value,
   onChange,
