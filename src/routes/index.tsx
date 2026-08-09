@@ -7,7 +7,7 @@ import {
   renderBadge,
   renderPfp,
 } from "@/lib/hhgoa-graphics";
-import { countCreated, countVisit, readStats, type LocalStats } from "@/lib/local-stats";
+import { countCreated, countVisit, type LocalStats } from "@/lib/local-stats";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -118,6 +118,7 @@ function Index() {
       if (navigator.canShare?.({ files: [file] })) {
         try {
           await navigator.share({ files: [file], text: CAPTION });
+          setStats(countCreated());
           return;
         } catch {
           /* user cancelled — fall through */
@@ -139,6 +140,10 @@ function Index() {
           <p className="font-brand mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
             Upload a photo, get an on-brand HH Goa graphic in seconds. No login. No gate.
           </p>
+          <div className="font-brand mt-6 flex justify-center gap-3">
+            <Stat label="Visits" value={stats.visits} />
+            <Stat label="Graphics created" value={stats.created} />
+          </div>
         </header>
 
         <div className="mt-8 flex justify-center gap-2">
