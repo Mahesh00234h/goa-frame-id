@@ -275,6 +275,8 @@ function Index() {
 }
 
 function Field({
+  ...({} as never);
+
   label,
   value,
   onChange,
